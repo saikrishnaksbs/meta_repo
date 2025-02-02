@@ -2,9 +2,11 @@
 REPOS = R1 R2 R3 R4
 GITHUB_USER = saikrishnaksbs
 META_REPO_DIR = $(shell pwd)
+GH_PAT = ${GH_PATH}  # Pull from environment variable
 
-.PHONY: all update build push ci sync-submodules
+.PHONY: all update build push ci sync-submodules trigger-ci
 
+# Default target to run the full pipeline
 all: update build push
 
 # Dynamically add submodules if missing
@@ -38,8 +40,9 @@ ci:
 	$(MAKE) build
 	$(MAKE) push
 
+# Trigger CI via repository_dispatch (GitHub Actions Workflow Dispatch)
 trigger-ci:
 	curl -X POST -H "Accept: application/vnd.github.v3+json" \
-		-H "Authorization: token ${GH_PAT}" \
-		--data '{"event_type": "trigger-ci"}' \
-		https://api.github.com/repos/your-username/meta-repo/dispatches
+	-H "Authorization: token $(GH_PAT)" \
+	--data '{"event_type": "trigger-ci"}' \
+	https://api.github.com/repos/$(GITHUB_USER)/meta_repo/dispatches
