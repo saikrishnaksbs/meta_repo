@@ -37,3 +37,9 @@ ci:
 	$(MAKE) update
 	$(MAKE) build
 	$(MAKE) push
+
+trigger-ci:
+	curl -X POST -H "Accept: application/vnd.github.v3+json" \
+		-H "Authorization: token ${GH_PAT}" \
+		--data '{"event_type": "trigger-ci"}' \
+		https://api.github.com/repos/your-username/meta-repo/dispatches
