@@ -27,5 +27,5 @@ jobs:
 
       - name: Push to GitHub Container Registry (GHCR)
         run: |
-          echo "${{ secrets.GH_PAT }}" | docker login ghcr.io -u saikrishnaksbs --password-stdin
+          echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u saikrishnaksbs --password-stdin
           docker push ghcr.io/saikrishnaksbs/meta_repo:latest
