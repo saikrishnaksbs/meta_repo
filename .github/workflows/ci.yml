@@ -2,24 +2,22 @@ name: CI Pipeline
 
 on:
   repository_dispatch:
-    types: [trigger-ci]  # Listens for API triggers from sub-repos
+    types: [trigger-ci]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Set up GH_PAT environment variable
-        run: echo "GH_PAT=${{ secrets.GHCR_TOKEN }}" >> $GITHUB_ENV
-
-      - name: Build and Push Docker Image
+      
+      - name: Build Docker Image
         run: |
-          echo "Building Docker image..."
+          echo "Building Docker Image..."
           docker build -t ghcr.io/saikrishnaksbs/meta_repo:latest .
-          
+
+      - name: Push to GitHub Container Registry (GHCR)
+        run: |
           echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u saikrishnaksbs --password-stdin
-          
           docker push ghcr.io/saikrishnaksbs/meta_repo:latest
