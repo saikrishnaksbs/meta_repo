@@ -9,9 +9,17 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout code
+      - name: Checkout meta_repo
         uses: actions/checkout@v3
-      
+
+      - name: Clone all five repositories
+        run: |
+          git clone https://github.com/saikrishnaksbs/R1.git R1
+          git clone https://github.com/saikrishnaksbs/R2.git R2
+          git clone https://github.com/saikrishnaksbs/R3.git R3
+          git clone https://github.com/saikrishnaksbs/R4.git R4
+          ls -l  # Verify the directories exist
+
       - name: Build Docker Image
         run: |
           echo "Building Docker Image..."
@@ -19,5 +27,5 @@ jobs:
 
       - name: Push to GitHub Container Registry (GHCR)
         run: |
-          echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u saikrishnaksbs --password-stdin
+          echo "${{ secrets.GH_PAT }}" | docker login ghcr.io -u saikrishnaksbs --password-stdin
           docker push ghcr.io/saikrishnaksbs/meta_repo:latest
