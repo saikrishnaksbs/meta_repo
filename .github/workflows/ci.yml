@@ -1,27 +1,25 @@
 name: CI Pipeline
 
 on:
-  workflow_dispatch:
-    inputs:
-      trigger-ci:
-        description: 'Trigger CI'
-        required: true
+  repository_dispatch:
+    types: [trigger-ci]  # Listens for API triggers from sub-repos
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
+
       - name: Set up GH_PAT environment variable
         run: echo "GH_PAT=${{ secrets.GHCR_TOKEN }}" >> $GITHUB_ENV
 
-      - name: Run CI
+      - name: Build and Push Docker Image
         run: |
-          echo "Running CI pipeline..."
-          curl -X POST -H "Accept: application/vnd.github.v3+json" \
-               -H "Authorization: token $GH_PAT" \
-               --data '{"event_type": "trigger-ci"}' \
-               https://api.github.com/repos/saikrishnaksbs/meta_repo/dispatches
+          echo "Building Docker image..."
+          docker build -t ghcr.io/saikrishnaksbs/meta_repo:latest .
+          
+          echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u saikrishnaksbs --password-stdin
+          
+          docker push ghcr.io/saikrishnaksbs/meta_repo:latest
