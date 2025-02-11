@@ -29,3 +29,6 @@ jobs:
         run: |
           echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u saikrishnaksbs --password-stdin
           docker push ghcr.io/saikrishnaksbs/meta_repo:latest
+
+      - name: Run docker-compose
+        run: docker-compose up -d
