@@ -31,4 +31,4 @@ jobs:
           docker push ghcr.io/saikrishnaksbs/meta_repo:latest
 
       - name: Run docker-compose
-        run: docker-compose up -d
+        run: docker compose up -d
