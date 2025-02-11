@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+  R1:
+    image: ghcr.io/saikrishnaksbs/meta_repo:latest
+    container_name: R1_container
+    restart: always
+    environment:
+      - SERVICE_NAME=R1
+    volumes:
+      - ./R1:/app/R1
+    networks:
+      - meta_network
+
+  R2:
+    image: ghcr.io/saikrishnaksbs/meta_repo:latest
+    container_name: R2_container
+    restart: always
+    environment:
+      - SERVICE_NAME=R2
+    volumes:
+      - ./R2:/app/R2
+    networks:
+      - meta_network
+
+  R3:
+    image: ghcr.io/saikrishnaksbs/meta_repo:latest
+    container_name: R3_container
+    restart: always
+    environment:
+      - SERVICE_NAME=R3
+    volumes:
+      - ./R3:/app/R3
+    networks:
+      - meta_network
+
+  R4:
+    image: ghcr.io/saikrishnaksbs/meta_repo:latest
+    container_name: R4_container
+    restart: always
+    environment:
+      - SERVICE_NAME=R4
+    volumes:
+      - ./R4:/app/R4
+    networks:
+      - meta_network
+
+networks:
+  meta_network:
+    driver: bridge
